@@ -8,7 +8,7 @@ Uses DCPCrypt package for Lazarus, (c) David Barton<br>
 
 http://www.cityinthesky.co.uk/opensource/dcpcrypt/
 
-Go to Package->Online Package Manager and install DCPCrypt
+Go to Package->Online Package Manager and install DCPCrypt<br>
 TNX to all good ppl who ported it to Lazarus!
 
 This program is free software: you can redistribute it and/or modify
