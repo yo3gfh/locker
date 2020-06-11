@@ -8,7 +8,7 @@
     http://www.cityinthesky.co.uk/opensource/dcpcrypt/
 
     Go to Package->Online Package Manager and install DCPCrypt
-    TNX to all good ppl to ported it to Lazarus!
+    TNX to all good ppl who ported it to Lazarus!
 
     ----------------------------------------------------------------------
     This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
     Features
     --------
     * when you close it, it simply encrypts to a file whatever text you type in
-    the editor, making also a backup.
+    the editor, also making a backup.
 
     * uses Rijndael and SHA512 for encryption. It's done based on a password
     of your choice.
