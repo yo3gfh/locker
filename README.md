@@ -1,9 +1,10 @@
-#Locker
+##Locker
+
 **Locker, v. 1.0 - small app to keep some text away from prying eyes =)**
 ---------------------------------------------------------------------
-Copyright (c) 2017-2020 Adrian Petrila, YO3GFH
-Built with Lazarus IDE
-Uses DCPCrypt package for Lazarus, (c) David Barton
+Copyright (c) 2017-2020 Adrian Petrila, YO3GFH<br>
+Built with Lazarus IDE<br>
+Uses DCPCrypt package for Lazarus, (c) David Barton<br>
 
 http://www.cityinthesky.co.uk/opensource/dcpcrypt/
 
