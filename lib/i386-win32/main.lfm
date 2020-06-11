@@ -1,0 +1,86 @@
+object mainform: Tmainform
+  Left = 395
+  Height = 658
+  Top = 143
+  Width = 895
+  Caption = 'mainform'
+  ClientHeight = 638
+  ClientWidth = 895
+  Menu = mmenu
+  OnClose = FormClose
+  OnCreate = FormCreate
+  Position = poDesktopCenter
+  LCLVersion = '2.0.6.0'
+  object sb: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 615
+    Width = 895
+    AutoHint = True
+    Panels = <>
+    ParentShowHint = False
+    ShowHint = True
+  end
+  object memo: TMemo
+    Left = 0
+    Height = 615
+    Top = 0
+    Width = 895
+    Align = alClient
+    Color = clBtnFace
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = 'Fixedsys'
+    Font.Pitch = fpFixed
+    Font.Quality = fqDraft
+    ParentFont = False
+    ScrollBars = ssAutoBoth
+    TabOrder = 1
+  end
+  object al: TActionList
+    left = 796
+    top = 84
+    object a_change_pass: TAction
+      Category = 'File'
+      Caption = '&Change password...'
+      Hint = 'Change or create a new password...'
+      OnExecute = a_change_passExecute
+      ShortCut = 16462
+    end
+    object a_quit: TAction
+      Category = 'File'
+      Caption = '&Quit'
+      Hint = 'Close this program'
+      OnExecute = a_quitExecute
+      ShortCut = 16465
+    end
+    object a_about: TAction
+      Category = 'Help'
+      Caption = '&About...'
+      Hint = 'About this program'
+      OnExecute = a_aboutExecute
+    end
+  end
+  object mmenu: TMainMenu
+    left = 740
+    top = 84
+    object MenuItem1: TMenuItem
+      Caption = '&File'
+      object MenuItem3: TMenuItem
+        Action = a_change_pass
+      end
+      object MenuItem4: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem5: TMenuItem
+        Action = a_quit
+      end
+    end
+    object MenuItem2: TMenuItem
+      Caption = '&Help'
+      object MenuItem6: TMenuItem
+        Action = a_about
+      end
+    end
+  end
+end

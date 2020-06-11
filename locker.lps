@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="11"/>
+    <BuildModes Active="Default"/>
+    <Units Count="9">
+      <Unit0>
+        <Filename Value="locker.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="22" Y="10"/>
+        <UsageCount Value="57"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="main.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="mainform"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="531"/>
+        <CursorPos X="54" Y="562"/>
+        <UsageCount Value="57"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="passwd.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="dlg_pass"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="86"/>
+        <CursorPos X="26" Y="69"/>
+        <UsageCount Value="57"/>
+        <Loaded Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="misc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="3"/>
+        <CursorPos X="140" Y="66"/>
+        <UsageCount Value="57"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="msgbox.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="dlg_mbox"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="50" Y="95"/>
+        <UsageCount Value="51"/>
+        <Loaded Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="isc.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="27" Y="16"/>
+        <UsageCount Value="18"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="C:\lazarus\components\dcpcrypt-2.0.4.1\dcpcrypt2.pas"/>
+        <UnitName Value="DCPcrypt2"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="384"/>
+        <CursorPos Y="406"/>
+        <UsageCount Value="8"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="C:\lazarus\fpc\3.0.0\source\rtl\inc\systemh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="425"/>
+        <CursorPos X="3" Y="443"/>
+        <UsageCount Value="9"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="C:\lazarus\components\dcpcrypt-2.0.4.1\Ciphers\dcprijndael.pas"/>
+        <UnitName Value="DCPrijndael"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="30"/>
+        <CursorPos X="20" Y="46"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit8>
+    </Units>
+    <JumpHistory Count="9" HistoryIndex="8">
+      <Position1>
+        <Filename Value="main.pas"/>
+        <Caret Line="381" Column="20" TopLine="467"/>
+      </Position1>
+      <Position2>
+        <Filename Value="main.pas"/>
+        <Caret Line="488" Column="29" TopLine="472"/>
+      </Position2>
+      <Position3>
+        <Filename Value="main.pas"/>
+        <Caret Line="121" Column="71" TopLine="98"/>
+      </Position3>
+      <Position4>
+        <Filename Value="main.pas"/>
+        <Caret Line="16" TopLine="199"/>
+      </Position4>
+      <Position5>
+        <Filename Value="passwd.pas"/>
+        <Caret Line="28" Column="57" TopLine="9"/>
+      </Position5>
+      <Position6>
+        <Filename Value="main.pas"/>
+        <Caret Line="96" Column="13" TopLine="75"/>
+      </Position6>
+      <Position7>
+        <Filename Value="passwd.pas"/>
+        <Caret Line="56" TopLine="23"/>
+      </Position7>
+      <Position8>
+        <Filename Value="passwd.pas"/>
+        <Caret Line="28" Column="57" TopLine="8"/>
+      </Position8>
+      <Position9>
+        <Filename Value="main.pas"/>
+        <Caret Line="108" Column="31" TopLine="462"/>
+      </Position9>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode="default"/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>
