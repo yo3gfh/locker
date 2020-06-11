@@ -1,4 +1,5 @@
-    ##Locker, v. 1.0 - small app to keep some text away from prying eyes =)
+	#Locker
+    **Locker, v. 1.0 - small app to keep some text away from prying eyes =)**
     ---------------------------------------------------------------------
     Copyright (c) 2017-2020 Adrian Petrila, YO3GFH
     Built with Lazarus IDE
@@ -23,7 +24,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-    ##Features
+    **Features**
     --------
     * when you close it, it simply encrypts to a file whatever text you type in
     the editor, also making a backup.
