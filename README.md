@@ -6,7 +6,7 @@ Copyright (c) 2017-2020 Adrian Petrila, YO3GFH<br>
 Built with Lazarus IDE<br>
 Uses DCPCrypt package for Lazarus, (c) David Barton<br>
 
-http://www.cityinthesky.co.uk/opensource/dcpcrypt/
+<http://www.cityinthesky.co.uk/opensource/dcpcrypt/>
 
 Go to Package->Online Package Manager and install DCPCrypt<br>
 TNX to all good ppl who ported it to Lazarus!
