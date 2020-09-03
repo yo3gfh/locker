@@ -71,6 +71,7 @@ resourcestring
   date_fmt              = 'YYYY_MM_DD';
   ini_pass_section      = 'Settings';
   ini_pass_value        = 'Password';
+  ini_salt_value        = 'Salt';
   err_old_pass          = 'Old and new password are identical :-)';
   err_bad_old_pass      = 'Old password is wrong...';
   err_bad_pass          = 'Password is wrong...';

@@ -8,7 +8,7 @@
     http://www.cityinthesky.co.uk/opensource/dcpcrypt/
 
     Go to Package->Online Package Manager and install DCPCrypt
-    TNX to all good ppl who ported it to Lazarus!
+    TNX to all good ppl to ported it to Lazarus!
 
     ----------------------------------------------------------------------
     This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
     Features
     --------
     * when you close it, it simply encrypts to a file whatever text you type in
-    the editor, also making a backup.
+    the editor, making also a backup.
 
     * uses Rijndael and SHA512 for encryption. It's done based on a password
     of your choice.
@@ -47,7 +47,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, DCPsha512, DCPrijndael, Forms, Controls,
-  Graphics, Dialogs, ActnList, ComCtrls, Menus, StdCtrls, inifiles, strutils;
+  Graphics, Dialogs, ActnList, ComCtrls, Menus, StdCtrls, inifiles, strutils, IdCoderMIME;
 
 const
   //sha512 is 512, sha256 is 256, sha1 is 160
@@ -83,10 +83,13 @@ type
   private
     { private declarations }
   public
-    function hash_pass             ( const pass: string ) : string;
+    function hash_pass             ( const pass: string; const salt: string ) : string;
     function is_password_blank : boolean;
     function load_password : string;
     procedure save_password        ( const pass : string );
+    function load_salt : string;
+    procedure save_salt            ( const salt : string );
+    function make_salt : string;
     procedure check_for_config;
     function new_password          ( const msg : string ) : boolean;
     function change_password       ( const msg : string ) : boolean;
@@ -117,6 +120,7 @@ var
 begin
   result := false;
   if not fileexists ( app_data ) then exit;
+  if not fileexists ( app_ini ) then exit;
 
   // try and make a filename from current date
   dt := now;
@@ -124,8 +128,9 @@ begin
   crt_date_str := FormatDateTime ( date_fmt, dt );
   if crt_date_str = '' then exit;
 
-  // backup file
-  result := CopyFile ( app_data, crt_date_str + app_data_bak );
+  // backup files
+  result := CopyFile ( app_data, 'dat_' + crt_date_str + app_data_bak );
+  result := CopyFile ( app_ini, 'ini_' + crt_date_str + app_data_bak );
 end;
 
 // must we really work?
@@ -138,6 +143,8 @@ end;
 // data decryption; returns used keysize or '0' on error
 function Tmainform.decrypt_data : integer;
 var
+  b64: TIdDecoderMIME;
+  in_ms: TMemoryStream;
   in_fs: TFileStream;            // encrypted data from disk
   out_ms: TMemoryStream;         // will hold decrypted data
   kkey: TKey;                    // vector to hold pass digest
@@ -152,7 +159,9 @@ begin
   // convert sha512 hex digest saved to inifile to vector
   if not hash_to_key ( load_password, kkey ) then exit;
 
+  b64 := TIdDecoderMIME.Create(self);
   in_fs := TFileStream.Create ( app_data, fmOpenRead );
+  in_ms := TMemoryStream.Create;
   out_ms := TMemoryStream.Create;
   dcp_rij := TDCP_rijndael.Create ( self );
 
@@ -163,7 +172,11 @@ begin
 
     // init, decrypt and clean up
     dcp_rij.Init ( kkey, key_size, nil );
-    dcp_rij.DecryptStream ( in_fs, out_ms, in_fs.Size );
+    in_ms.Seek ( 0, soFromBeginning );
+    b64.DecodeBegin ( in_ms );
+    b64.Decode ( in_fs, in_fs.Size );
+    in_ms.Seek ( 0, soFromBeginning );
+    dcp_rij.DecryptStream ( in_ms, out_ms, in_ms.Size );
     dcp_rij.Reset;
     dcp_rij.Burn;
 
@@ -179,7 +192,8 @@ begin
       my_msgbox ( e.Message );
     end;
   end;
-
+  b64.free;
+  in_ms.free;
   in_fs.free;
   out_ms.free;
   dcp_rij.free;
@@ -191,6 +205,8 @@ end;
 // data encryption; returns used keysize or '0' on error
 function Tmainform.encrypt_data : integer;
 var
+  b64: TIdEncoderMIME;
+  out_ms: TMemoryStream;
   in_ms: TMemoryStream;           // data to fuckup
   out_fs: TFilestream;            // file to write
   dcp_rij: TDCP_rijndael;         // cypher object
@@ -205,7 +221,9 @@ begin
     // convert sha512 hex digest saved to inifile to vector
     if not hash_to_key ( load_password, kkey ) then exit;
 
+    b64 := TIdEncoderMIME.Create(self);
     in_ms := TMemoryStream.Create;
+    out_ms := TMemoryStream.Create;
     out_fs := TFileStream.Create ( app_data, fmCreate );
     dcp_rij := TDCP_rijndael.Create ( self );
 
@@ -215,6 +233,7 @@ begin
 
       // start from the beginning, or else...
       in_ms.Seek ( 0, soFromBeginning );
+      out_ms.Seek ( 0, soFromBeginning );
 
       // use max. possible key size
       key_size := dcp_rij.GetMaxKeySize;
@@ -222,7 +241,9 @@ begin
 
       // init, encrypt and clean up
       dcp_rij.Init ( kkey, key_size, nil );
-      dcp_rij.EncryptStream ( in_ms, out_fs, in_ms.Size );
+      dcp_rij.EncryptStream ( in_ms, out_ms, in_ms.Size );
+      out_ms.Seek ( 0, soFromBeginning );
+      b64.EncodeStream ( out_ms, out_fs, out_ms.Size );
       dcp_rij.Reset;
       dcp_rij.Burn;
       result := key_size;
@@ -236,7 +257,8 @@ begin
     in_ms.free;
     out_fs.free;
     dcp_rij.free;
-
+    out_ms.free;
+    b64.Free;
   end;
 end;
 {$hints on}
@@ -273,6 +295,20 @@ begin
   end;
 end;
 
+// incredibly complex function for reading salt from config file
+function Tmainform.load_salt : string;
+var
+  ini: TIniFile;
+begin
+  result := '';
+  ini := TIniFile.Create ( app_ini );
+  try
+    result := ini.ReadString ( ini_pass_section, ini_salt_value, '' );
+  finally
+    ini.free;
+  end;
+end;
+
 // incredibly complex function for saving pass to config file
 procedure Tmainform.save_password ( const pass : string );
 var
@@ -284,6 +320,35 @@ begin
   finally
     ini.free;
   end;
+end;
+
+// incredibly complex function for saving salt to config file
+procedure Tmainform.save_salt ( const salt : string );
+var
+  ini: TIniFile;
+begin
+  ini := TIniFile.Create ( app_ini );
+  try
+    ini.WriteString ( ini_pass_section, ini_salt_value, salt );
+  finally
+    ini.free;
+  end;
+end;
+
+// generate a salt for password
+function Tmainform.make_salt : string;
+const
+  alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';//62
+var
+  i, idx : Integer;
+begin
+  randomize;
+  result := '';
+  for i := 1 to 32 do
+    begin
+      idx := random ( length(alphabet) ) + 1;
+      result := result + alphabet[idx];
+    end;
 end;
 
 // lol
@@ -299,7 +364,7 @@ end;
 function Tmainform.new_password ( const msg : string ) : boolean;
 var
   dlg: Tdlg_pass;
-  n, p_new: string;
+  n, p_new, salt: string;
 begin
   dlg := Tdlg_pass.create ( self );
   result := false;
@@ -315,10 +380,13 @@ begin
     begin
       // hash password and save it to ini
       p_new := dlg.enew.Text;
-      n := hash_pass ( p_new );
+      //salt := load_salt;
+      (*if salt = '' then*) salt := make_salt;
+      n := hash_pass ( p_new, salt );
       if n <> '' then
       begin
         save_password ( n );
+        save_salt ( salt );
         result := true;
       end;
     end;
@@ -332,14 +400,13 @@ end;
 function Tmainform.change_password ( const msg : string ) : boolean;
 var
   dlg: Tdlg_pass;
-  o, n, s, p_old, p_new: string;
+  o, n, s, p_old, salt, p_new: string;
 begin
   dlg := Tdlg_pass.create ( self );
   result := false;
   try
     // tell onkeyup handler we're using all fields
     dlg.Tag := DLGTAG_CHANGE;
-
     // init stuff
     dlg.warning.Caption := msg;
 
@@ -348,10 +415,11 @@ begin
     if dlg.ModalResult = mrok then
     begin
       // make hash-hash from user inputs
+      salt := load_salt;
       p_old := dlg.eold.Text;
       p_new := dlg.enew.Text;
-      o := hash_pass ( p_old );
-      n := hash_pass ( p_new );
+      o := hash_pass ( p_old, salt );
+      n := hash_pass ( p_new, salt );
 
       // load old pass from ini
       s := load_password;
@@ -359,8 +427,12 @@ begin
       // if it's somehow empty, don't bother, save new one and be done with it
       if s = '' then
       begin
-        if n <> '' then save_password(n);
-        result := true;
+        if n <> '' then
+        begin
+          save_password ( n );
+          save_salt ( salt );
+          result := true;
+        end;
       end
       else
       begin
@@ -368,7 +440,10 @@ begin
         begin  // check if old=new
           if o = s then
           begin
+            salt := make_salt;
+            n := hash_pass ( p_new, salt );
             save_password ( n );
+            save_salt ( salt );
             result := true;
           end
             else my_msgbox ( err_bad_old_pass );
@@ -413,7 +488,7 @@ begin
       result := VP_BADPASS;
 
       // hash pass
-      n := hash_pass ( p_new );
+      n := hash_pass ( p_new, load_salt );
 
       // ..and check against existing
       s := load_password;
@@ -438,6 +513,7 @@ begin
     ini := TIniFile.Create ( app_ini );
     try
       ini.WriteString ( ini_pass_section, ini_pass_value, '' );
+      ini.WriteString ( ini_pass_section, ini_salt_value, '' );
     finally
       ini.free;
     end;
@@ -446,7 +522,7 @@ end;
 
 {$hints off}
 // make sha512 hex string from a password
-function Tmainform.hash_pass ( const pass: string ) : string;
+function Tmainform.hash_pass ( const pass: string; const salt: string ) : string;
 var
   digest: TKey;           // digest vector
   i: integer;
@@ -457,6 +533,7 @@ begin
 
   // check for crap
   if pass = '' then exit;
+  if salt = '' then exit;
 
   // zero vector
   FillChar ( digest, KEYSIZE, 0 );
@@ -466,7 +543,7 @@ begin
   try
     // make digest
     sha512.Init;
-    sha512.UpdateStr ( pass );
+    sha512.UpdateStr ( pass + salt );
     sha512.Final ( digest );
 
     s := '';
@@ -496,6 +573,7 @@ begin
   begin
     check_for_config;
     backup_data;
+    //save_salt ( make_salt );
     if is_password_blank then        // did we erase ini while app running?
     begin
       if new_password ( warn_no_def_encr_pass ) then encrypt_data;
