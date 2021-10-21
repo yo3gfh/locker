@@ -572,7 +572,6 @@ begin
   Close;
 end;
 
-// search for text in our memo
 procedure Tmainform.find_dlgFind(Sender: TObject);
 begin
   if find_dlg.FindText <> '' then
@@ -663,7 +662,6 @@ end;
 
 procedure Tmainform.a_findExecute(Sender: TObject);
 begin
-  // init our search position
   if frEntireScope in find_dlg.Options then
      tidx := 0
   else

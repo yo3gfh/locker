@@ -60,6 +60,13 @@ object mainform: Tmainform
       Hint = 'About this program'
       OnExecute = a_aboutExecute
     end
+    object a_find: TAction
+      Category = 'File'
+      Caption = '&Find...'
+      Hint = 'Search for text in the edit control ...'
+      OnExecute = a_findExecute
+      ShortCut = 16454
+    end
   end
   object mmenu: TMainMenu
     left = 740
@@ -68,6 +75,10 @@ object mainform: Tmainform
       Caption = '&File'
       object MenuItem3: TMenuItem
         Action = a_change_pass
+      end
+      object MenuItem7: TMenuItem
+        Action = a_find
+        Caption = 'Find...'
       end
       object MenuItem4: TMenuItem
         Caption = '-'
@@ -82,5 +93,10 @@ object mainform: Tmainform
         Action = a_about
       end
     end
+  end
+  object find_dlg: TFindDialog
+    OnFind = find_dlgFind
+    left = 684
+    top = 84
   end
 end

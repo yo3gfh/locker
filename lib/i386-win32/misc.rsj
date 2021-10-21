@@ -9,6 +9,7 @@
 {"hash":256236900,"name":"misc.date_fmt","sourcebytes":[89,89,89,89,95,77,77,95,68,68],"value":"YYYY_MM_DD"},
 {"hash":213582195,"name":"misc.ini_pass_section","sourcebytes":[83,101,116,116,105,110,103,115],"value":"Settings"},
 {"hash":145417188,"name":"misc.ini_pass_value","sourcebytes":[80,97,115,115,119,111,114,100],"value":"Password"},
+{"hash":366644,"name":"misc.ini_salt_value","sourcebytes":[83,97,108,116],"value":"Salt"},
 {"hash":221917577,"name":"misc.err_old_pass","sourcebytes":[79,108,100,32,97,110,100,32,110,101,119,32,112,97,115,115,119,111,114,100,32,97,114,101,32,105,100,101,110,116,105,99,97,108,32,58,45,41],"value":"Old and new password are identical :-)"},
 {"hash":83629838,"name":"misc.err_bad_old_pass","sourcebytes":[79,108,100,32,112,97,115,115,119,111,114,100,32,105,115,32,119,114,111,110,103,46,46,46],"value":"Old password is wrong..."},
 {"hash":127808782,"name":"misc.err_bad_pass","sourcebytes":[80,97,115,115,119,111,114,100,32,105,115,32,119,114,111,110,103,46,46,46],"value":"Password is wrong..."},
